@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="transition_image">image_transition</string>
+
+    <!--ERRORS-->
+    <string name="error_request">An error has occurred: %1$s</string>
+    <string name="error_no_internet">You need to have a valid internet connection</string>
+    <string name="error_empty_data">There\'s no data available :(</string>
+</resources>
