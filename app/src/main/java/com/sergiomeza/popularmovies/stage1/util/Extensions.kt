@@ -45,7 +45,7 @@ class Const {
     companion object {
         val API_BASE_URL = "https://api.themoviedb.org/3/movie/"
         val BASE_IMAGE_URL = "http://image.tmdb.org/t/p/"
-        val API_KEY = "7eab02746f447d2dfb75cce7f37506ca"
+        val API_KEY = "<YOUR-IP-ID>"
         val DETAIL_DATA = "MOVIE_DATA"
     }
 }
