@@ -44,7 +44,14 @@ fun Context.isConnectingToInternet(): Boolean {
 class Const {
     companion object {
         val API_BASE_URL = "https://api.themoviedb.org/3/movie/"
+        val BASE_IMAGE_URL = "http://image.tmdb.org/t/p/"
         val API_KEY = "7eab02746f447d2dfb75cce7f37506ca"
         val DETAIL_DATA = "MOVIE_DATA"
     }
 }
+
+enum class ApiMethods(val state: String) {
+    POPULAR("POPULAR"),
+    TOP_RATED("TOP_RATED")
+}
+

@@ -2,9 +2,10 @@ package com.sergiomeza.popularmovies.stage1.presenter
 
 import android.content.Context
 import com.sergiomeza.popularmovies.stage1.Api
-import com.sergiomeza.popularmovies.stage1.MainView
+import com.sergiomeza.popularmovies.stage1.ui.view.MainView
 import com.sergiomeza.popularmovies.stage1.R
 import com.sergiomeza.popularmovies.stage1.model.ApiResponse
+import com.sergiomeza.popularmovies.stage1.util.ApiMethods
 import com.sergiomeza.popularmovies.stage1.util.isConnectingToInternet
 import com.sergiomeza.popularmovies.stage1.util.retrofit
 import retrofit2.Call
@@ -14,7 +15,7 @@ import retrofit2.Response
 /**
  * Created by sergiomeza on 4/4/17.
  */
-class MainPresenter(val mMainView :MainView, val mContext: Context) {
+class MainPresenter(val mMainView : MainView, val mContext: Context) {
     /**
      * Initialize the retrofit Singleton
      */
@@ -26,7 +27,8 @@ class MainPresenter(val mMainView :MainView, val mContext: Context) {
      * @param mRefresh is passed to know if the loading state is the initial with the progressbar
      *                 or if it's from swipe refresh
      */
-    fun getMovies(mPage: Int = 1, mRefresh: Boolean = false){
+    fun getMovies(mPage: Int = 1, mRefresh: Boolean = false,
+                  mMethod: String = ApiMethods.POPULAR.state){
 
         /**
          * if we have an active internet connection
@@ -40,7 +42,11 @@ class MainPresenter(val mMainView :MainView, val mContext: Context) {
             /**
              * Assing the mCall variable to the request
              */
-            mCall = api.getPopular()
+            when(mMethod){
+                ApiMethods.POPULAR.state -> mCall = api.getPopular()
+                ApiMethods.TOP_RATED.state -> mCall = api.getTopRated()
+            }
+
             mCall?.enqueue(object : Callback<ApiResponse> {
                 override fun onFailure(call: Call<ApiResponse>?, t: Throwable?) {
                     mMainView.hideLoading(true)

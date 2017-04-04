@@ -27,7 +27,7 @@ class MainAdapter(mMovieClick: OnMovieItemClickListener): RecyclerView.Adapter<M
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolderGrid {
         val mInflater = LayoutInflater.from(parent?.context)
-        return ViewHolderGrid(mInflater.inflate(R.layout.item_movie, parent, false))
+        return MainAdapter.ViewHolderGrid(mInflater.inflate(R.layout.item_movie, parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolderGrid?, position: Int) {
@@ -38,8 +38,8 @@ class MainAdapter(mMovieClick: OnMovieItemClickListener): RecyclerView.Adapter<M
 
     class ViewHolderGrid(itemView: View) :
             RecyclerView.ViewHolder(itemView) {
-        var mImg: ImageView =  itemView.findViewById(R.id.mImgGrid) as ImageView
 
+        var mImg: ImageView = itemView.findViewById(R.id.mImgGrid) as ImageView
         /**
          * Bindview into recyclerView
          */

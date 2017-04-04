@@ -1,7 +1,6 @@
-package com.sergiomeza.popularmovies.stage1
+package com.sergiomeza.popularmovies.stage1.ui.view
 
 import com.sergiomeza.popularmovies.stage1.model.ApiResponse
-import com.sergiomeza.popularmovies.stage1.model.Movie
 
 /**
  * Created by sergiomeza on 4/4/17.

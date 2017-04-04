@@ -6,10 +6,13 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.widget.GridLayoutManager
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
-import com.sergiomeza.popularmovies.stage1.MainView
+import com.sergiomeza.popularmovies.stage1.ui.view.MainView
 
 import com.sergiomeza.popularmovies.stage1.R
 import com.sergiomeza.popularmovies.stage1.model.ApiResponse
@@ -17,6 +20,7 @@ import com.sergiomeza.popularmovies.stage1.model.Movie
 import com.sergiomeza.popularmovies.stage1.presenter.MainPresenter
 import com.sergiomeza.popularmovies.stage1.ui.adapter.MainAdapter
 import com.sergiomeza.popularmovies.stage1.ui.adapter.OnMovieItemClickListener
+import com.sergiomeza.popularmovies.stage1.util.ApiMethods
 import com.sergiomeza.popularmovies.stage1.util.Const
 import com.sergiomeza.popularmovies.stage1.util.ErrorView
 import com.sergiomeza.popularmovies.stage1.util.init
@@ -27,6 +31,7 @@ import kotlinx.android.synthetic.main.activity_main.*
  * Call to interact with the Xml View
  */
 class MainActivity : AppCompatActivity(), MainView, OnMovieItemClickListener {
+
     /**
      * When a movie is clicked
      */
@@ -103,6 +108,7 @@ class MainActivity : AppCompatActivity(), MainView, OnMovieItemClickListener {
      */
     var mPresenter: MainPresenter? = null
     var mAdapter = MainAdapter(this)
+    var mMethodSelected = ApiMethods.POPULAR.state
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,15 +132,41 @@ class MainActivity : AppCompatActivity(), MainView, OnMovieItemClickListener {
              * to the api
              */
             mPresenter = MainPresenter(this, this)
-            mPresenter?.getMovies()
         }
 
         /**
          * When the user swipe to refresh
          */
         mSwipe.setOnRefreshListener {
-            mPresenter?.getMovies(mRefresh = true)
+            mPresenter?.getMovies(mRefresh = true, mMethod = mMethodSelected)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        setSelection(menu?.findItem(R.id.menu_popular)!!, mMethodSelected)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean = when(item?.itemId){
+        R.id.menu_popular -> setSelection(item, ApiMethods.POPULAR.state)
+        R.id.menu_top_rated -> setSelection(item, ApiMethods.TOP_RATED.state)
+        else -> super.onOptionsItemSelected(item)
+    }
+
+    /**
+     * When an filter is selected
+     */
+    private fun setSelection(mMenuItem: MenuItem, mMethod: String): Boolean {
+        /**
+         * Calling the presenter with the method selected
+         */
+        mPresenter?.getMovies(mMethod = mMethod)
+        this.title = mMenuItem.title
+        mMethodSelected = mMethod
+        mMenuItem.isChecked = true
+
+        return true
     }
 
     override fun onDestroy() {
