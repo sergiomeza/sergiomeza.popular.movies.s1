@@ -1,6 +1,7 @@
 package com.sergiomeza.popularmovies.stage1.presenter
 
 import android.content.Context
+import android.util.Log
 import com.sergiomeza.popularmovies.stage1.Api
 import com.sergiomeza.popularmovies.stage1.ui.view.MainView
 import com.sergiomeza.popularmovies.stage1.R
@@ -54,6 +55,7 @@ class MainPresenter(val mMainView : MainView, val mContext: Context) {
                 }
 
                 override fun onResponse(call: Call<ApiResponse>?, response: Response<ApiResponse>?) {
+
                     try {
                         if (response?.body() != null) {
                             mMainView.hideLoading(false)
@@ -62,10 +64,14 @@ class MainPresenter(val mMainView : MainView, val mContext: Context) {
                              */
                             mMainView.onRequestSuccess(response.body())
                         }
+                        else {
+                            mMainView.hideLoading(true)
+                            mMainView.onRequestError(response?.message()!!)
+                        }
                     }
                     catch (mException: Exception){
                         mMainView.hideLoading(true)
-                        mMainView.onRequestError("Errosillo")
+                        mMainView.onRequestError(mContext.getString(R.string.error_request, "${mException.cause}"))
                     }
                 }
             })
